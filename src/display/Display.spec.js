@@ -23,21 +23,39 @@ describe('<Display />', () => {
         fireEvent.click(closeButton)
 
         expect(openDiv).toHaveTextContent('Closed')
+    });
+
+    it('Should display either "locked" or "unlocked"', () => {
+        const { getByText } = render(<Dashboard />)
+
+        const lockButton = getByText(/Lock Gate/i);
+        const closeButton = getByText(/Close Gate/i);
+
+
+
+        const lockDiv = getByText(/unlocked/i);
+
+        expect(lockDiv).toHaveTextContent('Unlocked');
+
+        fireEvent.click(closeButton)
+        fireEvent.click(lockButton)
+
+        expect(lockDiv).toHaveTextContent('Locked')
     })
 
-    /* it('Should display either "open" or "closed"', () => {
-        const { getByText } = render(<Display />);
-        const { getByTestId } = render(<Controls />)
+    it('Should display "closed" if passed closed prop=true', () => {
+        const { getByText } = render(<Display closed={true} />);
 
-        const lockButton = getByTestId(/lockBtn/i);
-        const openButton = getByTestId(/openBtn/i);
+        const closedDiv = getByText(/closed/i);
 
-        fireEvent.click(openButton)
+        expect(closedDiv).toHaveTextContent('Closed')
+    })
 
-        expect(getByText(/unlocked/i)).toBeTruthy();
+    it('Should display "open" if passed closed prop=false', () => {
+        const { getByText } = render(<Display closed={false} />);
 
-        fireEvent.click(lockButton);
+        const closedDiv = getByText(/open/i);
 
-        expect(getByText(/locked/i)).toBeTruthy();
-    }) */
+        expect(closedDiv).toHaveTextContent('Open')
+    })
 })
